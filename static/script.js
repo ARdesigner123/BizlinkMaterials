@@ -2,7 +2,7 @@
 // 1. BACKEND API CONFIGURATION
 // ==========================================
 // Replace this with your actual live Render.com URL once deployed!
-const BACKEND_URL = 'https://your-backend-name.onrender.com'; 
+const BACKEND_URL = 'https://bizlinkbackend-ivo4.onrender.com'; 
 
 // ==========================================
 // 2. SEARCH FUNCTION
