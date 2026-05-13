@@ -1,7 +1,7 @@
 // ==========================================
 // 1. BACKEND API CONFIGURATION
 // ==========================================
-// Replace this with your actual live Render.com URL once deployed!
+// Replace this with your actual live Render.com URL
 const BACKEND_URL = 'https://bizlinkbackend-ivo4.onrender.com'; 
 
 // ==========================================
@@ -15,12 +15,12 @@ async function searchContainer() {
         return;
     }
 
-    // Clear previous table data
+    // Clear previous table data and show a loading message
     const tbody = document.getElementById("tableBody");
-    tbody.innerHTML = "<tr><td colspan='8'>Searching database...</td></tr>";
+    tbody.innerHTML = "<tr><td colspan='8'>Scanning and updating database...</td></tr>";
 
     try {
-        // We no longer query Supabase directly. We ask our Render Backend!
+        // This fetch triggers the backend to update the time AND fetch the data
         const response = await fetch(`${BACKEND_URL}/api/container/${searchInput}`);
         
         if (!response.ok) {
@@ -58,6 +58,7 @@ function updateDashboard(containerId, data) {
         document.getElementById('cardLocation').innerText = data[0].storage_location;
     }
     
+    // The new time from the backend will be formatted here automatically!
     if(data[0].issuance_time) {
         const dateObj = new Date(data[0].issuance_time);
         document.getElementById('cardTime').innerText = dateObj.toLocaleString();
@@ -79,7 +80,7 @@ function renderTable(data) {
         let timeText = "-";
         if(row.issuance_time){
             const d = new Date(row.issuance_time);
-            timeText = d.toISOString().replace('T', ' ').substring(0, 19);
+            timeText = d.toLocaleString(); // Changed this to toLocaleString() so it matches the card perfectly
         }
 
         tr.innerHTML = `
