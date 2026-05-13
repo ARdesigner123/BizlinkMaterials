@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bizlink MES - Digital Twin Dashboard</title>
+    <link rel="stylesheet" href="static/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+
+    <div class="sidebar">
+        <div class="sidebar-header">Bizlink MES</div>
+        <div class="nav-group">Modules</div>
+        <div class="nav-item">Work Order Mgt.</div>
+        <div class="nav-item active">Material Mgt.</div>
+        <div class="sub-nav">Material Receiving</div>
+        <div class="sub-nav">LOT Material Feeding</div>
+        <div class="nav-item" style="margin-top: 20px;">Production Mgt.</div>
+    </div>
+
+    <div class="main-content">
+        <div class="top-tabs">
+            <div class="tab active">Digital Twin Tracker</div>
+            <div class="tab">Material Receiving</div>
+            <div class="tab">LOT Material Feeding</div>
+        </div>
+
+        <div class="dashboard">
+            <div class="search-container">
+                <input type="text" id="searchInput" placeholder="Scan or Enter Container ID (e.g., Box-101)...">
+                <button class="btn-primary" onclick="searchContainer()">Search</button>
+            </div>
+
+            <div class="live-card" id="statusCard" style="display: none;">
+                <div class="card-info">
+                    <h2 id="cardContainerId">Scanned Container: --</h2>
+                    <p>
+                        <strong>Storage Location:</strong> <span id="cardLocation">--</span> | 
+                        <strong>Items Inside:</strong> <span id="cardCount">0</span> |
+                        <strong>Last Scan Time:</strong> <span id="cardTime">--</span>
+                    </p>
+                </div>
+                <div>
+                    <span class="status-badge">● LIVE SYNC ACTIVE</span>
+                </div>
+            </div>
+
+            <div class="table-container">
+                <div class="table-header">
+                    <h3 id="tableTitle">Please scan a container to view items</h3>
+                </div>
+                <table id="materialTable">
+                    <thead>
+                        <tr>
+                            <th>QR Code</th>
+                            <th>Product</th>
+                            <th>Product Des</th>
+                            <th>Qty</th>
+                            <th>UOM</th>
+                            <th>Storage Location</th>
+                            <th>Work Order</th>
+                            <th>Issuance Time</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableBody">
+                        </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script src="static/script.js"></script>
+</body>
+</html>
