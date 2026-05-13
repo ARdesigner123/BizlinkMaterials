@@ -1,12 +1,8 @@
 // ==========================================
-// 1. INITIALIZE SUPABASE
+// 1. BACKEND API CONFIGURATION
 // ==========================================
-// REPLACE THESE with your actual URL and Anon Key from Supabase Dashboard > Settings > API
-const SUPABASE_URL = 'https://sdqxdhopgwwfcurezqvy.supabase.co'; 
-const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNkcXhkaG9wZ3d3ZmN1cmV6cXZ5Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3ODY1MDE0NCwiZXhwIjoyMDk0MjI2MTQ0fQ.cCkt4v5XOqwBCOp2uKI8jy8S-g7I1gtIBuTAHm8e9Lo'; 
-
-const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-// Note: Ensure your Supabase table is named exactly 'materials' (or change the name in the query below)
+// Replace this with your actual live Render.com URL once deployed!
+const BACKEND_URL = 'https://your-backend-name.onrender.com'; 
 
 // ==========================================
 // 2. SEARCH FUNCTION
@@ -24,13 +20,14 @@ async function searchContainer() {
     tbody.innerHTML = "<tr><td colspan='8'>Searching database...</td></tr>";
 
     try {
-        // Query Supabase for all materials matching the container_id
-        const { data, error } = await supabase
-            .from('materials') // Change this if your table name is different
-            .select('*')
-            .eq('container_id', searchInput);
-
-        if (error) throw error;
+        // We no longer query Supabase directly. We ask our Render Backend!
+        const response = await fetch(`${BACKEND_URL}/api/container/${searchInput}`);
+        
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
+        const data = await response.json();
 
         if (data && data.length > 0) {
             updateDashboard(searchInput, data);
@@ -44,7 +41,7 @@ async function searchContainer() {
 
     } catch (error) {
         console.error("Error fetching data:", error);
-        tbody.innerHTML = `<tr><td colspan='8' style="color:red;">Error connecting to database. Check console.</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan='8' style="color:red;">Error connecting to backend server. Check console.</td></tr>`;
     }
 }
 
@@ -52,21 +49,16 @@ async function searchContainer() {
 // 3. UPDATE THE DASHBOARD CARD
 // ==========================================
 function updateDashboard(containerId, data) {
-    // Show the card
     document.getElementById('statusCard').style.display = 'flex';
-    
-    // Update the text
     document.getElementById('cardContainerId').innerText = `Scanned Container: ${containerId}`;
     document.getElementById('tableTitle').innerText = `List of items registered in ${containerId}`;
     document.getElementById('cardCount').innerText = data.length;
 
-    // Use the storage location and time from the first item in the array
     if(data[0].storage_location) {
         document.getElementById('cardLocation').innerText = data[0].storage_location;
     }
     
     if(data[0].issuance_time) {
-        // Format the timestamp nicely
         const dateObj = new Date(data[0].issuance_time);
         document.getElementById('cardTime').innerText = dateObj.toLocaleString();
     }
@@ -77,15 +69,13 @@ function updateDashboard(containerId, data) {
 // ==========================================
 function renderTable(data) {
     const tbody = document.getElementById("tableBody");
-    tbody.innerHTML = ""; // Clear the "searching..." message
+    tbody.innerHTML = ""; 
 
     data.forEach(row => {
         const tr = document.createElement("tr");
         
-        // Handle potentially null work orders gracefully
         const workOrderText = row.work_order ? row.work_order : "-";
         
-        // Format the date for the table
         let timeText = "-";
         if(row.issuance_time){
             const d = new Date(row.issuance_time);
@@ -106,7 +96,7 @@ function renderTable(data) {
     });
 }
 
-// Optional: Trigger search when pressing 'Enter' key in the input field
+// Trigger search when pressing 'Enter' key
 document.getElementById('searchInput').addEventListener('keypress', function (e) {
     if (e.key === 'Enter') {
         searchContainer();
