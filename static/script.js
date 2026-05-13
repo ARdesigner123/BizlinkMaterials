@@ -2,8 +2,8 @@
 // 1. INITIALIZE SUPABASE
 // ==========================================
 // REPLACE THESE with your actual URL and Anon Key from Supabase Dashboard > Settings > API
-const SUPABASE_URL = 'https://YOUR_PROJECT_ID.supabase.co'; 
-const SUPABASE_KEY = 'YOUR_ANON_KEY'; 
+const SUPABASE_URL = 'https://sdqxdhopgwwfcurezqvy.supabase.co'; 
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNkcXhkaG9wZ3d3ZmN1cmV6cXZ5Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3ODY1MDE0NCwiZXhwIjoyMDk0MjI2MTQ0fQ.cCkt4v5XOqwBCOp2uKI8jy8S-g7I1gtIBuTAHm8e9Lo'; 
 
 const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 // Note: Ensure your Supabase table is named exactly 'materials' (or change the name in the query below)
